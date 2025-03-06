@@ -8,12 +8,12 @@ crispy_forms_filters %} {% block content %}
       {{form|crispy}}
     </fieldset>
     <div class="form-group">
-      <button type="submit" class="btn btn-outline-info">Sign Up</button>
+      <button type="submit" class="btn btn-outline-info mb-2">Sign Up</button>
     </div>
   </form>
   <div class="border-top pt-3">
     <small class="text-muted">
-      Already have an account? <a href="#" class="ml-2">Sign In</a>
+      Already have an account? <a href="{% url "login" %}" class="ml-2">Sign In</a>
     </small>
   </div>
 </div>
