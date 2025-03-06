@@ -1,14 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Woohoo Blog</title>
-</head>
-<body>
-    <h1>Blog Home!</h1>
-    {% for post in posts %}
-    <p>{{post.title}}</p>
-    {% endfor %}
-</body>
-</html>
+{% extends "blog/base.html" %} {% block content %}
+<h1>Blog Home!</h1><br>
+{% for post in posts %}
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+      <a href="#" class="mr-2">{{post.author}}</a>
+      <small class="text-muted">{{post.date_posted}}</small>
+    </div>
+    <h2><a href="#" class="article-title">{{post.title}}</a></h2>
+    <p class="article-content">{{post.content}}</p>
+  </div>
+</article>
+{% endfor %} {% endblock content %}

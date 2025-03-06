@@ -1,0 +1,143 @@
+:root {
+    --primary-color: #111;
+    --secondary-color: #f4f4f4;
+    --tertiary-color: #333;
+    --bg-dark: #111;
+    --bg-light: lightgrey;
+    --text-dark: #000;
+    --text-md: #333;
+    --text-light: #fff;
+}
+
+body {
+    background: var(--secondary-color);
+    color: var(--text-md);
+    margin-top: 5rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #444444;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    margin: 0;
+}
+
+.bg-steel {
+    background-color: #5f788a;
+}
+
+.site-header .navbar-nav .nav-link {
+    color: #cbd5db;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+    color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+    font-weight: 500;
+}
+
+.content-section {
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    box-shadow: 5px 10px 5px rgba(0,0,0,0.2);
+}
+
+.article-title {
+    color: #444444;
+}
+
+a.article-title:hover {
+    color: #428bca;
+    text-decoration: none;
+}
+
+.article-subtitle {
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: var(--tertiary-color);
+}
+
+.article-content {
+    white-space: pre-line;
+}
+
+.article-content.hide-image + p > img {
+    visibility: hidden;
+    position: absolute;
+    z-index: -10;
+}
+
+.article-img {
+    height: 65px;
+    width: 65px;
+    margin-right: 16px;
+}
+
+.article-end-img {
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 10px;
+}
+
+.article-metadata {
+    padding-bottom: 1px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #e3e3e3;
+}
+
+.article-metadata a:hover {
+    color: #333;
+    text-decoration: none;
+}
+
+.article-top {
+    position: relative;
+}
+.article-category {
+    /* display: inline-block; */
+    position: absolute;
+    right: 0;
+}
+
+.article-svg {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+}
+
+.account-img {
+    height: 125px;
+    width: 125px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+}
+
+.account-heading {
+    font-size: 2.5rem;
+}
+
+.likes {
+    display: flex;
+    margin: 0 5px;
+    align-items: center;
+    
+}
