@@ -82,6 +82,11 @@ a.article-title:hover {
     z-index: -10;
 }
 
+.index-max-height {
+    max-height: 30vh;
+    overflow: hidden;
+}
+
 .article-img {
     height: 65px;
     width: 65px;
