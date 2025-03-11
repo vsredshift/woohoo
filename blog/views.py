@@ -35,11 +35,12 @@ class UserPostListView(ListView):
 
 class PostDetailView(DetailView):
     model = Post
+    context_object_name = "post"
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ["title", "content"]
+    fields = ["title", "content", "category"]
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -48,7 +49,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ["title", "content"]
+    fields = ["title", "content", "category"]
 
     def form_valid(self, form):
         form.instance.author = self.request.user

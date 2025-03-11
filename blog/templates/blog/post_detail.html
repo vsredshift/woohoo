@@ -1,20 +1,25 @@
 {% extends "blog/base.html" %} {% block content %}
 
 <article class="d-flex content-section">
-  <img src="{{object.author.profile.image.url}}" alt="profile pic" class="rounded-circle article-img me-3">
+  <img src="{{post.author.profile.image.url}}" alt="profile pic" class="rounded-circle article-img me-3">
   <div class="media-body">
     <div class="article-metadata">
-      <a href="{% url "user-posts"  object.author.username %}">{{object.author.first_name}} {{object.author.last_name}}</a>
-      <small class="text-muted">{{object.date_posted|date:"d F Y"}}</small>
-      {% if object.author == user %}
+      <div class="article-tagline">
+        <div>
+          <a href="{% url "user-posts"  post.author.username %}">{{post.author.first_name}} {{post.author.last_name}}</a>
+          <small class="text-muted">{{post.date_posted|date:"d F Y"}}</small>
+        </div>
+          <a href="#" class="article-category">{{ post.category }}</a>
+      </div>
+      {% if post.author == user %}
       <div>
-        <a href="{% url "post-update" object.id %}" class="btn btn-secondary btn-sm mt-1 mb-1">Update</a>
-        <a href="{% url "post-delete" object.id %}" class="btn btn-danger btn-sm mt-1 mb-1">Delete</a>
+        <a href="{% url "post-update" post.id %}" class="btn btn-secondary btn-sm mt-1 mb-1">Update</a>
+        <a href="{% url "post-delete" post.id %}" class="btn btn-danger btn-sm mt-1 mb-1">Delete</a>
     </div>
       {% endif %}
     </div>
-    <h2 class="article-title">{{object.title}}</a></h2>
-    <p class="article-content">{{object.content}}</p>
+    <h2 class="article-title">{{post.title}}</a></h2>
+    <p class="article-content">{{post.content}}</p>
   </div>
 </article>
 {% endblock content %}
