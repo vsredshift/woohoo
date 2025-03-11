@@ -1,0 +1,19 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2 class="mb-4">Meet Our Team</h2>
+
+        <div class="d-flex flex-wrap gap-3">
+            {% for staff in staff_members %}
+                <div class="card text-center p-3">
+                    <img src="{{ staff.profile.image.url }}" class="card-img-top mx-auto" alt="{{ staff.get_full_name }}" style="width: 120px; height: 120px;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ staff.get_full_name }}</h5>
+                        <p class="card-text">{{ staff.profile.bio|default:"No bio available" }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
