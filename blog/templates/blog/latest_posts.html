@@ -24,7 +24,9 @@
         <p class="article-content index-max-height">{{post.content}}</p>
       </div>
     </article>
-  {% endfor %} 
+    {% empty %}
+        <p>No posts yet</p>
+    {% endfor %} 
 
   {% if is_paginated %}
     {% include "blog/components/paginated.html" %}
