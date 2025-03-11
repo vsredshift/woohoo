@@ -1,4 +1,4 @@
-from django.db.models import Model, OneToOneField, ImageField, CASCADE
+from django.db.models import Model, OneToOneField, ImageField, TextField, CASCADE
 from django.contrib.auth.models import User
 from PIL import Image
 
@@ -6,6 +6,7 @@ from PIL import Image
 class Profile(Model):
     user = OneToOneField(User, on_delete=CASCADE)
     image = ImageField(default="default.jpg", upload_to="profile_pics")
+    bio = TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.user.username} Profile"
