@@ -5,6 +5,7 @@ from django.db.models import (
     DateTimeField,
     CASCADE,
     ForeignKey,
+    BooleanField
 )
 from django.urls import reverse
 from django.utils import timezone
@@ -27,6 +28,7 @@ class Post(Model):
     date_posted = DateTimeField(default=timezone.now)
     author = ForeignKey(User, on_delete=CASCADE)
     category = ForeignKey(Category, on_delete=CASCADE, default=1)
+    is_featured = BooleanField(default=False)
 
     def __str__(self):
         return self.title

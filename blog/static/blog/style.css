@@ -8,6 +8,7 @@
   --text-dark: #000;
   --text-md: #333;
   --text-light: #fff;
+  --text-highlight: rgb(180, 165, 31);
 }
 
 body {
@@ -157,4 +158,9 @@ a.article-title:hover {
   display: flex;
   margin: 0 5px;
   align-items: center;
+}
+
+.featured-post {
+  color: var(--text-highlight);
+  font-weight: bold;
 }
