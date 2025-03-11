@@ -3,12 +3,14 @@
     <p class="text-muted">Some information to go here...</p>
     <ul class="list-group">
       <li class="list-group-item list-group-item-light">
+        <a href="{% url "featured-posts" %}" class="sidebar-link">Featured Posts</a>
+      </li>
+      <li class="list-group-item list-group-item-light">
         <a href="{% url "latest-posts" %}" class="sidebar-link">Latest Posts</a>
       </li>
       <li class="list-group-item list-group-item-light">
-        <a href="{% url "featured-posts" %}" class="sidebar-link">Featured Posts</a>
+        <a href="{% url "saved-posts" %}" class="sidebar-link">Saved Posts</a>
       </li>
-      <li class="list-group-item list-group-item-light">My Saved Articles</li>
       <li class="list-group-item list-group-item-light">
         About our Writers
       </li>

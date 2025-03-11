@@ -9,6 +9,8 @@ from .views import (
     CategoryPostListView,
     FeaturedPostListView,
     LatestPostsView,
+    SavedPostsListView,
+    toggle_save_post,
     AboutView,
 )
 
@@ -24,5 +26,7 @@ urlpatterns = [
     ),
     path("featured-posts/", FeaturedPostListView.as_view(), name="featured-posts"),
     path("latest-posts/", LatestPostsView.as_view(), name="latest-posts"),
+    path("saved-posts/", SavedPostsListView.as_view(), name="saved-posts"),
+    path("save-post/<int:post_id>/", toggle_save_post, name="toggle-save-post"),
     path("about/", AboutView.as_view(), name="blog-about"),
 ]

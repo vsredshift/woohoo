@@ -1,5 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import (
     ListView,
@@ -12,7 +14,7 @@ from django.views.generic import (
 from django.utils import timezone
 from datetime import timedelta
 
-from blog.models import Post, Category
+from blog.models import Post, Category, SavedPost
 
 
 class PostListView(ListView):
@@ -87,6 +89,14 @@ class LatestPostsView(PostListView):
         return Post.objects.filter(date_posted__gte=time_limit).order_by("-date_posted")
 
 
+class SavedPostsListView(LoginRequiredMixin, PostListView):
+    def get_queryset(self):
+        return super().get_queryset().filter(saved_by=self.request.user)
+
+    def get_custom_message(self):
+        return f"Your Saved Posts"
+
+
 class PostDetailView(DetailView):
     model = Post
     context_object_name = "post"
@@ -132,3 +142,30 @@ class AboutView(TemplateView):
         context["show_socials"] = True
         context["title"] = "About"
         return context
+
+
+@login_required
+def save_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if SavedPost.objects.filter(user=request.user, post=post).exists():
+        messages.info(request, "You have already saved this post.")
+    else:
+        SavedPost.objects.create(user=request.user, post=post)
+        messages.success(request, "Post saved to your reading list.")
+
+    return redirect("post-detail", post_id=post.id)
+
+
+@login_required
+def toggle_save_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if request.user in post.saved_by.all():
+        post.saved_by.remove(request.user)
+        messages.info(request, "Removed from saved posts.")
+    else:
+        post.saved_by.add(request.user)
+        messages.success(request, "Post saved successfully!")
+
+    return redirect(request.META.get("HTTP_REFERER", "blog-home"))

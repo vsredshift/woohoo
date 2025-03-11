@@ -10,22 +10,23 @@
         
         <div class="collapse navbar-collapse" id="navbarToggle">
           <div class="navbar-nav me-auto">
+            {% for category in categories %}
+            <a href="{% url 'category-posts' category.slug %}" class="nav-item nav-link">{{ category.name }}</a>
+            {% endfor %}
+          </div>
+          
+          {% comment %} Navbar Right-hand Side {% endcomment %}
+          <div class="navbar-nav ms-auto"> 
+            {% if user.is_authenticated %}
+            {% if user.is_staff %}
+            <a href="{% url "post-create" %}" class="nav-item nav-link">New Post</a>
+            {% endif %}
+            
             {% if user.is_staff %}
               <a href="{% url "user-posts" user %}" class="nav-item nav-link">My Posts</a>
             {% endif %}
             
-            {% for category in categories %}
-              <a href="{% url 'category-posts' category.slug %}" class="nav-item nav-link">{{ category.name }}</a>
-            {% endfor %}
-          </div>
-
-          {% comment %} Navbar Right-hand Side {% endcomment %}
-          <div class="navbar-nav ms-auto"> 
-            {% if user.is_authenticated %}
-              {% if user.is_staff %}
-                <a href="{% url "post-create" %}" class="nav-item nav-link">New Post</a>
-              {% endif %}
-
+              <a href="{% url "saved-posts" %}" class="nav-item nav-link">Saved Posts</a>
               <a href="{% url "profile" %}" class="nav-item nav-link">Profile</a>
             
               <form action="{% url "logout" %}" method="POST">

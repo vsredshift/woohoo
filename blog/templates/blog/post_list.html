@@ -21,7 +21,20 @@
                 {% endif %}
             
                 </div>
-                <a href="{% url "category-posts" post.category.slug %}" class="article-category">{{ post.category }}</a>
+                <div class="d-flex align-items-center gap-2"> 
+                    <form action="{% url "toggle-save-post" post.id %}" method="POST">
+                        {% csrf_token %}
+                        {% if user in post.saved_by.all %}
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                Mark as Read
+                                {% else %}
+                                <button type="submit" class="btn btn-sm btn-outline-primary">
+                                Save for Later
+                            {% endif %}
+                        </button>
+                    </form>
+                    <a href="{% url "category-posts" post.category.slug %}" class="article-category">{{ post.category }}</a>
+                </div>
             </div>    
             </div>
             
