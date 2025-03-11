@@ -1,0 +1,20 @@
+{% block footer %}
+  <footer class="site-footer bg-steel text-white py-4 mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <p>&copy; {{ current_year }} Woohoo News. All Rights Reserved.</p>
+        </div>
+        
+        <div class="col-md-6 text-md-end">
+          <ul class="list-unstyled d-flex justify-content-md-end">
+            <li class="mx-3"><a href="{% url 'blog-home' %}" class="text-white">Home</a></li>
+            <li class="mx-3"><a href="{% url 'blog-about' %}" class="text-white">About</a></li>
+            <li class="mx-3"><a href="#" class="text-white">Contact</a></li>
+            <li class="mx-3"><a href="#" class="text-white">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+{% endblock footer %}

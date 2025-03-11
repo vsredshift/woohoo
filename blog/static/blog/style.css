@@ -11,10 +11,26 @@
   --text-highlight: rgb(180, 165, 31);
 }
 
+html, body {
+  height: 100vh;
+  margin: 0;
+}
+
 body {
   background: var(--secondary-color);
   color: var(--text-md);
   margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+footer {
+  margin-top: auto;
 }
 
 h1,
@@ -169,5 +185,5 @@ a.article-title:hover {
   color: var(--bg-steel);
 }
 .sidebar-link:hover {
-  color: var(--primary-color)
+  color: var(--primary-color);
 }
