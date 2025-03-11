@@ -10,7 +10,7 @@ from django.views.generic import (
     TemplateView,
 )
 
-from blog.models import Post
+from blog.models import Post, Category
 
 
 class PostListView(ListView):
@@ -24,7 +24,7 @@ class PostListView(ListView):
 
 
 class UserPostListView(ListView):
-    model: Post
+    model = Post
     template_name = "blog/user_posts.html"
     context_object_name = "posts"
     paginate_by = 5
@@ -36,6 +36,22 @@ class UserPostListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["user_profile"] = self.user
+        return context
+    
+
+class CategoryPostListView(ListView):
+    model = Post
+    template_name = "blog/category_posts.html"
+    context_object_name = "posts"
+    paginate_by = 5
+
+    def get_queryset(self):
+        self.category = get_object_or_404(Category, slug=self.kwargs.get("slug"))
+        return Post.objects.filter(category=self.category).order_by("-date_posted")
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["category"] = self.category
         return context
 
 

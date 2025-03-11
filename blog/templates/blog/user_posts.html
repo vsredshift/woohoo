@@ -1,7 +1,7 @@
 {% extends "blog/base.html" %} 
 
 {% block content %}
-  <h1 class="mb3">Posts by {{user_profile.get_full_name|default:user_profile.username}} ({{page_obj.paginator.count}})</h1>
+  <h1 class="mb-3">Posts by {{user_profile.get_full_name|default:user_profile.username}} ({{page_obj.paginator.count}})</h1>
   {% for post in posts %}
     <article class="d-flex content-section">
       <img src="{{post.author.profile.image.url}}" alt="profile pic" class="rounded-circle article-img me-3">
@@ -23,21 +23,6 @@
     </article>
   {% endfor %} 
 {% if is_paginated %}
-  {% if page_obj.has_previous %}
-    <a href="?page=1" class="btn btn-outline-info mb-4">First</a>
-    <a href="?page={{page_obj.previous_page_number}}" class="btn btn-outline-info mb-4">Previous</a>
-    {% endif %}
-    {% for num in page_obj.paginator.page_range %}
-    {% if page_obj.number == num %}
-      <a href="?page={{num}}" class="btn btn-info mb-4">{{num}}</a>
-    {% elif num > page_obj.number|add:"-2" and num < page_obj.number|add:"2"%}
-      <a href="?page={{num}}" class="btn btn-outline-info mb-4">{{num}}</a>
-      {% endif %}
-      {% endfor %}
-      {% if page_obj.has_next %}
-      <a href="?page={{page_obj.next_page_number}}" class="btn btn-outline-info mb-4">Next</a>
-      <a href="?page={{page_obj.paginator.num_pages}}" class="btn btn-outline-info mb-4">Last</a>
-  
-  {% endif %}
+    {% include "blog/components/paginated.html" %}
 {% endif %}
 {% endblock content %}

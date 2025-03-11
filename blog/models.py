@@ -5,21 +5,32 @@ from django.db.models import (
     DateTimeField,
     CASCADE,
     ForeignKey,
-    BooleanField
+    BooleanField,
+    SlugField,
+    PositiveIntegerField,
 )
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.text import slugify
 from django.contrib.auth.models import User
 
 
 class Category(Model):
-    name = CharField(max_length=30)
+    name = CharField(max_length=30, unique=True)
+    slug = SlugField(unique=True, blank=True)
+    order = PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
     class Meta:
         verbose_name_plural = "categories"
+        ordering = ["order"]
 
 
 class Post(Model):
