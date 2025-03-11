@@ -1,35 +1,35 @@
 {% extends "blog/base.html" %} 
 
 {% block content %}
-  
-  {% if posts.count == 0 %}
-    <h2>No posts yet in {{category.name}}</h2>
-  {% else %}
-    <h1 class="mb3">Posts in {{category.name}}</h1> 
-  {% endif %}
-
   {% for post in posts %}
     <article class="d-flex content-section">
       <img src="{{post.author.profile.image.url}}" alt="profile pic" class="rounded-circle article-img me-3">
-    
       <div class="media-body">
+        
         <div class="article-metadata">
           <div class="article-tagline">
             <div>
               <a href="{% url "user-posts" post.author.username %}">{{post.author.first_name}} {{post.author.last_name}}</a>
               <small class="text-muted">{{post.date_posted|date:"d F Y"}}</small>
+              {% if post.is_featured %}
+                <a class="featured-post" href="#"><span class="featured-post">⭐ Featured Post</span></a>
+              {% endif %}
+        
             </div>
-            <a href="#" class="article-category">{{ post.category }}</a>
-          </div>
+              <a href="#" class="article-category">{{ post.category }}</a>
+          </div>    
         </div>
+        
         <h2><a href="{% url "post-detail" post.id %}" class="article-title">{{post.title}}</a></h2>
         <p class="article-content index-max-height">{{post.content}}</p>
       </div>
-    
     </article>
-  {% endfor %} 
-  
-{% if is_paginated %}
+    {% empty %}
+        <p>No posts yet</p>
+    {% endfor %} 
+
+  {% if is_paginated %}
     {% include "blog/components/paginated.html" %}
-{% endif %}
+  {% endif %}
+
 {% endblock content %}
