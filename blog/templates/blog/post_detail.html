@@ -9,7 +9,7 @@
           <a href="{% url "user-posts"  post.author.username %}">{{post.author.first_name}} {{post.author.last_name}}</a>
           <small class="text-muted">{{post.date_posted|date:"d F Y"}}</small> 
         </div>
-          <a href="#" class="article-category">{{ post.category }}</a>
+          <a href="{% url "category-posts" post.category.slug %}" class="article-category">{{ post.category }}</a>
          
       </div>
       {% if post.author == user %}
