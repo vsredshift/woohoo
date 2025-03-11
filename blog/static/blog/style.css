@@ -79,6 +79,10 @@ ul {
   color: #444444;
 }
 
+.article-subtitle {
+  color: lightslategray;
+}
+
 .media-body {
   width: 100%;
 }
