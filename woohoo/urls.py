@@ -7,6 +7,7 @@ from django.contrib.auth.views import (
     PasswordResetView,
     PasswordResetDoneView,
     PasswordResetConfirmView,
+    PasswordResetCompleteView,
 )
 from django.urls import path, include
 
@@ -37,6 +38,13 @@ urlpatterns = [
             template_name="users/password_reset_confirm.html"
         ),
         name="password_reset_confirm",
+    ),
+    path(
+        "password-reset-complete/",
+        PasswordResetCompleteView.as_view(
+            template_name="users/password_reset_complete.html"
+        ),
+        name="password_reset_complete",
     ),
 ]
 
