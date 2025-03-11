@@ -3,10 +3,18 @@
 <article class="d-flex content-section">
   <img src="{{post.author.profile.image.url}}" alt="profile pic" class="rounded-circle article-img me-3">
   <div class="media-body">
+    
     <div class="article-metadata">
-      <a href="{% url "user-posts" post.author.username %}">{{post.author.first_name}} {{post.author.last_name}}</a>
-      <small class="text-muted">{{post.date_posted|date:"d F Y"}}</small>
+      <div class="article-tagline">
+        <div>
+          <a href="{% url "user-posts" post.author.username %}">{{post.author.first_name}} {{post.author.last_name}}</a>
+          <small class="text-muted">{{post.date_posted|date:"d F Y"}}</small>
+        </div>
+          <a href="#" class="article-category">{{ post.category }}</a>
+      </div>
+      
     </div>
+    
     <h2><a href="{% url "post-detail" post.id %}" class="article-title">{{post.title}}</a></h2>
     <p class="article-content index-max-height">{{post.content}}</p>
   </div>
