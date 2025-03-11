@@ -2,7 +2,7 @@
 <header class="site-header">
     <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
       <div class="container">
-        <a href="{% url "blog-home" %}" class="navbar-brand mr-4">Woohoo Blog</a>
+        <a href="{% url "blog-home" %}" class="navbar-brand mr-4">Woohoo News</a>
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarToggle">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -10,10 +10,9 @@
           <div class="navbar-nav me-auto">
             {% if user.is_authenticated %}
               <a href="{% url "user-posts" user %}" class="nav-item nav-link">My Posts</a>
-            {% else %}
-              <a href="{% url "blog-about" %}" class="nav-item nav-link">About</a>
             {% endif %}
           </div>
+
           {% comment %} Navbar Right-hand Side {% endcomment %}
           <div class="navbar-nav ms-auto"> 
             {% if user.is_authenticated %}

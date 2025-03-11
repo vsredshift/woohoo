@@ -12,9 +12,9 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="{% static "blog/style.css" %}"> {% if title %}
-    <title>Woohoo Blog | {{title}}</title>
+    <title>Woohoo News | {{title}}</title>
     {% else %}
-    <title>Woohoo Blog</title>
+    <title>Woohoo News</title>
     {% endif %}
   </head>
 
@@ -28,7 +28,9 @@
           <div class="alert alert-{{message.tags}}">{{message}}</div>
           {% endfor %} {% endif %} {% block content %}{% endblock content %}
         </div>
+        {% if not hide_sidebar %}
         <div class="col-md-4">{% include "blog/components/sidebar.html" %}</div>
+        {% endif %}
       </div>
     </main>
   </body>

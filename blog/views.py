@@ -7,6 +7,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
     DeleteView,
+    TemplateView,
 )
 
 from blog.models import Post
@@ -74,5 +75,11 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return self.request.user == post.author
 
 
-def about(request):
-    return render(request, "blog/about.html", {"title": "About"})
+class AboutView(TemplateView):
+    template_name = "blog/about.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["hide_sidebar"] = True
+        context["title"] = "About"
+        return context
