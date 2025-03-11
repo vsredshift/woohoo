@@ -8,6 +8,7 @@ from django.db.models import (
     BooleanField,
     SlugField,
     PositiveIntegerField,
+    ManyToManyField,
 )
 from django.urls import reverse
 from django.utils import timezone
@@ -40,9 +41,22 @@ class Post(Model):
     author = ForeignKey(User, on_delete=CASCADE)
     category = ForeignKey(Category, on_delete=CASCADE, default=1)
     is_featured = BooleanField(default=False)
+    saved_by = ManyToManyField(User, related_name="saved_posts", blank=True)
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
         return reverse("post-detail", kwargs={"pk": self.pk})
+
+
+class SavedPost(Model):
+    user = ForeignKey(User, on_delete=CASCADE)
+    post = ForeignKey(Post, on_delete=CASCADE)
+    saved_at = DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ["user", "post"]
+
+    def __str__(self):
+        return f"{self.user.username} saved {self.post.title}"
