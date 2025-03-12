@@ -5,6 +5,7 @@ crispy_forms_filters %} {% block content %}
     {% csrf_token %}
     <fieldset class="form-group">
       <legend class="border-bottom mb-4">Blog Post</legend>
+      {{form.media}}
       {{form|crispy}}
     </fieldset>
     <div class="form-group">

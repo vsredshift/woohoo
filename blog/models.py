@@ -14,6 +14,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 
 class Category(Model):
@@ -35,9 +36,11 @@ class Category(Model):
 
 
 class Post(Model):
-    title = CharField(max_length=100)
-    content = TextField()
+    title = CharField(max_length=200)
+    subtitle = CharField(max_length=256, null=True)
+    content = RichTextField()
     date_posted = DateTimeField(default=timezone.now)
+    date_updated = DateTimeField(null=True, default=None)
     author = ForeignKey(User, on_delete=CASCADE)
     category = ForeignKey(Category, on_delete=CASCADE, default=1)
     is_featured = BooleanField(default=False)
@@ -48,6 +51,11 @@ class Post(Model):
 
     def get_absolute_url(self):
         return reverse("post-detail", kwargs={"pk": self.pk})
+    
+    def save(self, *args, **kwargs):
+        if self.pk:
+            self.date_updated = timezone.now()
+        super().save(*args, **kwargs)
 
 
 class SavedPost(Model):

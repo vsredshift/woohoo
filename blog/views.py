@@ -104,7 +104,7 @@ class PostDetailView(DetailView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ["title", "content", "category"]
+    fields = ["title", "subtitle", "content", "category"]
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -113,10 +113,13 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ["title", "content", "category"]
+    fields = ["title", "subtitle", "content", "category"]
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        post = form.save(commit=False)
+        post.date_updated = timezone.now()
+        post.save()
         return super().form_valid(form)
 
     def test_func(self):
