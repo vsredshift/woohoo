@@ -9,6 +9,7 @@ from django.db.models import (
     SlugField,
     PositiveIntegerField,
     ManyToManyField,
+    URLField,
 )
 from django.urls import reverse
 from django.utils import timezone
@@ -38,6 +39,7 @@ class Category(Model):
 class Post(Model):
     title = CharField(max_length=200)
     subtitle = CharField(max_length=256, null=True)
+    header_image = URLField(null=True, blank=True)
     content = RichTextField()
     date_posted = DateTimeField(default=timezone.now)
     date_updated = DateTimeField(null=True, default=None)

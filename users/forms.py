@@ -33,7 +33,7 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ["image", "bio"]
+        fields = ["image", "bio", "short_bio"]
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user", None)
@@ -41,4 +41,5 @@ class ProfileUpdateForm(forms.ModelForm):
 
         if user and not user.is_staff:
             self.fields.pop("bio", None)
+            self.fields.pop("short_bio", None)
 

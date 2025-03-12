@@ -80,9 +80,6 @@ ul {
   color: #444444;
 }
 
-.article-subtitle {
-  color: lightslategray;
-}
 
 .media-body {
   width: 100%;
@@ -94,9 +91,9 @@ a.article-title:hover {
 }
 
 .article-subtitle {
-  font-weight: 500;
+  font-weight: 400;
   font-size: 1.2rem;
-  color: var(--tertiary-color);
+  color: var(--text-md);
 }
 
 .article-content {
@@ -107,11 +104,6 @@ a.article-title:hover {
   visibility: hidden;
   position: absolute;
   z-index: -10;
-}
-
-.index-max-height {
-  max-height: 30vh;
-  overflow: hidden;
 }
 
 .article-img {
@@ -126,13 +118,25 @@ a.article-title:hover {
   object-fit: cover;
 }
 
+.article-subheading {
+  display: flex;
+  flex-direction: row;
+  justify-content:flex-start;
+}
+
+.article-subheading > img {
+  height: 120px;
+  width: 120px;
+  margin-right: 30px;
+}
+
 .card-body {
   padding: 10px;
 }
 
 .article-metadata {
-  padding-bottom: 1px;
-  margin-bottom: 4px;
+  padding-bottom: 2px;
+  margin-bottom: 10px;
   border-bottom: 1px solid #e3e3e3;
 }
 

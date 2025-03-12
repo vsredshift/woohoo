@@ -7,6 +7,7 @@ class Profile(Model):
     user = OneToOneField(User, on_delete=CASCADE)
     image = ImageField(default="default.jpg", upload_to="profile_pics")
     bio = TextField(blank=True, null=True)
+    short_bio = TextField(blank=True, null=True, default=None)
 
     def __str__(self):
         return f"{self.user.username} Profile"

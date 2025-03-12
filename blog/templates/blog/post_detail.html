@@ -38,6 +38,14 @@
     <h2 class="article-title">{{post.title}}</a></h2>
     <p class="article-subtitle">{{post.subtitle}}</p>
     <p class="article-content">{{post.content|safe}}</p>
+
+    <div>
+      <small>Article first published on {{post.date_posted|date:"d F Y"}}.</small>
+      {% if post.date_updated %}
+        <small class="text-muted">Updated on {{ post.date_updated|date:"d F Y" }}</small>
+      {% endif %}
+    </div>
+    <br>
    
     <div class="d-flex align-items-center">
       <span class="me-3">Views: {{ post.views }}</span>
