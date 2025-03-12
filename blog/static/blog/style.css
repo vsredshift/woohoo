@@ -11,7 +11,8 @@
   --text-highlight: rgb(180, 165, 31);
 }
 
-html, body {
+html,
+body {
   height: 100vh;
   margin: 0;
 }
@@ -190,4 +191,29 @@ a.article-title:hover {
 }
 .sidebar-link:hover {
   color: var(--primary-color);
+}
+
+.comment-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.comment {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.comment .reply {
+  margin-left: 50px; /* Indent nested replies */
+}
+
+.btn-comment-reply {
+  border-color: var(--bg-steel);
+  color: var(--bg-steel);
+}
+
+.reply-btn {
+  display: inline-block;
+
 }

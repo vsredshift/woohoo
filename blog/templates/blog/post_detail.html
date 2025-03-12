@@ -1,14 +1,18 @@
-{% extends "blog/base.html" %} {% block content %}
+{% extends "blog/base.html" %} {% load crispy_forms_tags %}{% block content %}
 
 <article class="d-flex content-section">
   <img src="{{post.author.profile.image.url}}" alt="profile pic" class="rounded-circle article-img me-3">
+  
   <div class="media-body">
     <div class="article-metadata">
       <div class="article-tagline">
+  
         <div>
           <a href="{% url "user-posts"  post.author.username %}">{{post.author.first_name}} {{post.author.last_name}}</a>
           <small class="text-muted">{{post.date_posted|date:"d F Y"}}</small> 
-        </div> <div class="d-flex align-items-center gap-2"> 
+        </div> 
+        
+        <div class="d-flex align-items-center gap-2"> 
           <form action="{% url "toggle-save-post" post.id %}" method="POST">
               {% csrf_token %}
               <button type="submit" class="btn btn-sm btn-outline-secondary">
@@ -20,18 +24,135 @@
               </button>
           </form>
           <a href="{% url "category-posts" post.category.slug %}" class="article-category">{{ post.category }}</a>
+        </div>
       </div>
-      </div>
+
       {% if post.author == user %}
-      <div>
-        <a href="{% url "post-update" post.id %}" class="btn btn-secondary btn-sm mt-1 mb-1">Update</a>
-        <a href="{% url "post-delete" post.id %}" class="btn btn-danger btn-sm mt-1 mb-1">Delete</a>
-    </div>
+        <div>
+          <a href="{% url "post-update" post.id %}" class="btn btn-secondary btn-sm mt-1 mb-1">Update</a>
+          <a href="{% url "post-delete" post.id %}" class="btn btn-danger btn-sm mt-1 mb-1">Delete</a>
+        </div>
       {% endif %}
     </div>
+    
     <h2 class="article-title">{{post.title}}</a></h2>
     <p class="article-subtitle">{{post.subtitle}}</p>
     <p class="article-content">{{post.content|safe}}</p>
+   
+    <div class="d-flex align-items-center">
+      <span class="me-3">Views: {{ post.views }}</span>
+  
+      <form action="{% url 'toggle-like' post.pk %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-sm {% if user in post.likes.all %}btn-success{% else %}btn-outline-success{% endif %}">
+          👍 Like{% if post.total_likes > 1 %}s{% endif %} ({{ post.total_likes }})
+        </button>
+      </form>
+    </div>
+
+    <br>
+    <hr>
+    <br>
+
+    <div class="comment-header">
+      {% if post.comments.count == 0 %}
+        <h4 class="mb-3">No Comments Yet.</h4>
+      {% else %}
+        <h2>Comments {{post.comments.count}}</h2>
+      {% endif %}
+
+      {% comment %} Comment Form {% endcomment %}
+      <button id="add-comment-button" class="btn btn-secondary mb-3">Add Comment</button>
+    </div>
+    
+    <div id="add-comment-form" style="display:none;">
+      <form method="POST">
+        {% csrf_token %}
+        {{form|crispy}}
+        <button type="submit" class="btn btn-primary mb-2">Submit Comment</button>
+      </form>
+    </div>
+
+    <hr>
+
+    {% comment %} Display Top Level Comments {% endcomment %}
+    {% for comment in comments %}
+      <div class="comment" id="comment-{{ comment.id }}">
+        <p><strong>{{ comment.user.username }}</strong> said: 
+          <span>{{ comment.content }}</span>
+        </p>
+
+        {% comment %} Button to toggle reply form {% endcomment %}
+        <button class="btn btn-outline-secondary reply-btn mb-3" data-comment-id={{comment.id}}>Reply</button>
+        
+        {# Form to reply to comments #}
+        <div id="reply-form-{{ comment.id }}" style="display:none;">
+          <form method="POST" action="{% url 'post-detail' post.pk %}">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="hidden" name="parent_comment" value="{{ comment.id }}">
+            <button type="submit" class="btn btn-primary mb-2">Submit Reply</button>
+          </form>
+        </div>
+        
+        {# Display nested comments #}
+        {% for reply in comment.replies.all %}
+          <div class="ml-3 reply">
+            <p><strong>{{ reply.user.username }}</strong> replied: {{ reply.content }}</p>
+          </div>
+        {% endfor %}
+      
+      </div>
+
+      <hr>
+    {% endfor %}
+
+
   </div>
 </article>
+
 {% endblock content %}
+
+
+{% block post-detail-script %}
+
+<script>
+  // Show or hide Add Comment form
+  document
+    .getElementById("add-comment-button")
+    .addEventListener("click", function () {
+      if (this.textContent === "Cancel") {
+        this.textContent = "Add Comment"
+      } else {
+        this.textContent = "Cancel";
+      }
+
+      var form = document.getElementById("add-comment-form");
+      if (form.style.display === "none") {
+        form.style.display = "block";
+      } else {
+        form.style.display = "none";
+      }
+    });
+
+  // Show or hide Reply form
+  var replyBtns = document.querySelectorAll(".reply-btn");
+
+  replyBtns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var commentId = this.getAttribute("data-comment-id");
+      var replyForm = document.getElementById("reply-form-" + commentId);
+      if (replyForm.style.display === "none") {
+        replyForm.style.display = "block";
+      } else {
+        replyForm.style.display = "none";
+      }
+      if (this.textContent === "Cancel") {
+        this.textContent = "Reply"
+      } else {
+        this.textContent = "Cancel";
+      }
+    });
+  });
+</script>
+{% endblock post-detail-script %}

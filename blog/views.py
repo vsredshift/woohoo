@@ -14,7 +14,8 @@ from django.views.generic import (
 from django.utils import timezone
 from datetime import timedelta
 
-from blog.models import Post, Category, SavedPost
+from blog.forms import CommentForm
+from blog.models import Comment, Post, Category, SavedPost
 
 
 class PostListView(ListView):
@@ -89,6 +90,22 @@ class LatestPostsView(PostListView):
         return Post.objects.filter(date_posted__gte=time_limit).order_by("-date_posted")
 
 
+class MostViewedPostsView(PostListView):
+    def get_custom_message(self):
+        return f"Most viewed posts"
+
+    def get_queryset(self):
+        return Post.objects.all().order_by("-views")[:10]
+
+
+class MostLikedPostsView(PostListView):
+    def get_custom_message(self):
+        return f"Most liked posts"
+
+    def get_queryset(self):
+        return Post.objects.all().order_by("-likes")[:10]
+
+
 class SavedPostsListView(LoginRequiredMixin, PostListView):
     def get_queryset(self):
         return super().get_queryset().filter(saved_by=self.request.user)
@@ -100,6 +117,12 @@ class SavedPostsListView(LoginRequiredMixin, PostListView):
 class PostDetailView(DetailView):
     model = Post
     context_object_name = "post"
+
+    def get_object(self, queryset=None):
+        post = super().get_object(queryset)
+        post.views += 1  # Increment view count
+        post.save(update_fields=["views"])  # Save only the views field
+        return post
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -172,3 +195,50 @@ def toggle_save_post(request, post_id):
         messages.success(request, "Post saved successfully!")
 
     return redirect(request.META.get("HTTP_REFERER", "blog-home"))
+
+
+@login_required
+def toggle_like_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+
+    return redirect("post-detail", pk=post.pk)
+
+
+@login_required
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    # Increment the view count on every request (to simulate post views)
+    post.views += 1
+    post.save(update_fields=["views"])
+
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.user = request.user
+            new_comment.post = post
+
+            # Check if the comment is a reply
+            parent_comment_id = request.POST.get("parent_comment")
+            if parent_comment_id:
+                new_comment.parent_comment = Comment.objects.get(id=parent_comment_id)
+
+            new_comment.save()
+            return redirect("post-detail", pk=post.pk)
+    else:
+        form = CommentForm()
+
+    # Get all top-level comments (parent_comment is null)
+    comments = post.comments.filter(parent_comment__isnull=True)
+    context = {
+        "post": post,
+        "form": form,
+        "comments": comments,
+    }
+    return render(request, "blog/post_detail.html", context)
