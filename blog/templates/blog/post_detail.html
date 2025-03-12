@@ -54,19 +54,22 @@
     <hr>
     <br>
 
-    {% if post.comments.count == 0 %}
-      <h4 class="mb-3">No Comments Yet.</h4>
-    {% else %}
-      <h2>Comments {{post.comments.count}}</h2>
-    {% endif %}
+    <div class="comment-header">
+      {% if post.comments.count == 0 %}
+        <h4 class="mb-3">No Comments Yet.</h4>
+      {% else %}
+        <h2>Comments {{post.comments.count}}</h2>
+      {% endif %}
 
-    {% comment %} Comment Form {% endcomment %}
-    <button id="add-comment-button" class="btn btn-secondary">Add Comment</button>
+      {% comment %} Comment Form {% endcomment %}
+      <button id="add-comment-button" class="btn btn-secondary mb-3">Add Comment</button>
+    </div>
+    
     <div id="add-comment-form" style="display:none;">
       <form method="POST">
         {% csrf_token %}
         {{form|crispy}}
-        <button type="submit" class="btn btn-primary">Submit Comment</button>
+        <button type="submit" class="btn btn-primary mb-2">Submit Comment</button>
       </form>
     </div>
 
@@ -80,7 +83,7 @@
         </p>
 
         {% comment %} Button to toggle reply form {% endcomment %}
-        <button class="btn btn-outline-secondary reply-btn" data-comment-id={{comment.id}}>Reply</button>
+        <button class="btn btn-outline-secondary reply-btn mb-3" data-comment-id={{comment.id}}>Reply</button>
         
         {# Form to reply to comments #}
         <div id="reply-form-{{ comment.id }}" style="display:none;">
@@ -88,7 +91,7 @@
             {% csrf_token %}
             {{ form|crispy }}
             <input type="hidden" name="parent_comment" value="{{ comment.id }}">
-            <button type="submit" class="btn btn-secondary">Submit Reply</button>
+            <button type="submit" class="btn btn-primary mb-2">Submit Reply</button>
           </form>
         </div>
         
@@ -118,6 +121,12 @@
   document
     .getElementById("add-comment-button")
     .addEventListener("click", function () {
+      if (this.textContent === "Cancel") {
+        this.textContent = "Add Comment"
+      } else {
+        this.textContent = "Cancel";
+      }
+
       var form = document.getElementById("add-comment-form");
       if (form.style.display === "none") {
         form.style.display = "block";
@@ -137,6 +146,11 @@
         replyForm.style.display = "block";
       } else {
         replyForm.style.display = "none";
+      }
+      if (this.textContent === "Cancel") {
+        this.textContent = "Reply"
+      } else {
+        this.textContent = "Cancel";
       }
     });
   });
