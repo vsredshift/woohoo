@@ -3,45 +3,51 @@
 {% block content %}
 
     {% if message %}
-        <div class="content-section"><h2>{{ message }} ({{page_obj.paginator.count}})</h2></div>
+        <div class="content-section"><h2>{{ message }} ({{ page_obj.paginator.count }})</h2></div>
     {% endif %}
     
     {% for post in posts %}
         <article class="d-flex content-section">
-        <img src="{{post.author.profile.image.url}}" alt="profile pic" class="rounded-circle article-img me-3">
-        <div class="media-body">
-            
-            <div class="article-metadata">
-            <div class="article-tagline">
-                <div>
-                <a href="{% url "user-posts" post.author.username %}">{{post.author.first_name}} {{post.author.last_name}}</a>
-                <small class="text-muted">{{post.date_posted|date:"d F Y"}}</small>
-                {% if post.date_updated %}<small class="text-muted">Updated on {{post.date_updated|date:"d F Y"}}</small>{% endif %}
-                {% if post.is_featured %}
-                    <span class="featured-post">⭐ Featured Post</span>
-                {% endif %}
-            
-                </div>
-                <div class="d-flex align-items-center gap-2"> 
-                    <form action="{% url "toggle-save-post" post.id %}" method="POST">
-                        {% csrf_token %}
-                        {% if user in post.saved_by.all %}
-                            <button type="submit" class="btn btn-sm btn-outline-secondary">
-                                Mark as Read
-                                {% else %}
-                                <button type="submit" class="btn btn-sm btn-outline-primary">
-                                Save for Later
+            <div class="media-body">    
+                <div class="article-metadata">
+                    
+                    <div class="article-tagline">
+                        <div>
+                            <a href="{% url "user-posts" post.author.username %}">{{ post.author.first_name }} {{ post.author.last_name }}</a>
+                            <small class="text-muted">{{ post.date_posted|date:"d F Y" }}</small>
+  
+                            {% if post.is_featured %}
+                                <span class="featured-post">⭐ Featured Post</span>
                             {% endif %}
-                        </button>
-                    </form>
-                    <a href="{% url "category-posts" post.category.slug %}" class="article-category">{{ post.category }}</a>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-2"> 
+                            <form action="{% url "toggle-save-post" post.id %}" method="POST">
+                                {% csrf_token %}
+                                {% if user in post.saved_by.all %}
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                        Mark as Read
+                                {% else %}
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">
+                                        Save for Later
+                                {% endif %}
+                                    </button>
+                            </form>
+
+                            <a href="{% url "category-posts" post.category.slug %}" class="article-category">{{ post.category }}</a>
+                        </div>
+                    </div>    
                 </div>
-            </div>    
+                
+                <div class="article-subheading">
+                    <img src={{post.header_image}} alt="tagline image">
+                    <div>
+                        <h2><a href="{% url "post-detail" post.id %}" class="article-title">{{post.title}}</a></h2>
+                        <p class="article-content article-subtitle">{{post.subtitle|safe}}</p>
+
+                    </div>
+                </div>
             </div>
-            
-            <h2><a href="{% url "post-detail" post.id %}" class="article-title">{{post.title}}</a></h2>
-            <p class="article-content index-max-height">{{post.content|safe}}</p>
-        </div>
         </article>
     {% endfor %} 
 
