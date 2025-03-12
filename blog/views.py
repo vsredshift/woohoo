@@ -117,6 +117,9 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        post = form.save(commit=False)
+        post.date_updated = timezone.now()
+        post.save()
         return super().form_valid(form)
 
     def test_func(self):

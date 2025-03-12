@@ -16,6 +16,7 @@
                 <div>
                 <a href="{% url "user-posts" post.author.username %}">{{post.author.first_name}} {{post.author.last_name}}</a>
                 <small class="text-muted">{{post.date_posted|date:"d F Y"}}</small>
+                {% if post.date_updated %}<small class="text-muted">Updated on {{post.date_updated|date:"d F Y"}}</small>{% endif %}
                 {% if post.is_featured %}
                     <span class="featured-post">⭐ Featured Post</span>
                 {% endif %}
@@ -39,7 +40,7 @@
             </div>
             
             <h2><a href="{% url "post-detail" post.id %}" class="article-title">{{post.title}}</a></h2>
-            <p class="article-content index-max-height">{{post.content}}</p>
+            <p class="article-content index-max-height">{{post.content|safe}}</p>
         </div>
         </article>
     {% endfor %} 
