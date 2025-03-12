@@ -87,12 +87,12 @@ class LatestPostsView(PostListView):
     def get_queryset(self):
         time_limit = timezone.now() - timedelta(days=self.number_of_days)
         return Post.objects.filter(date_posted__gte=time_limit).order_by("-date_posted")
-    
+
 
 class MostViewedPostsView(PostListView):
     def get_custom_message(self):
         return f"Most viewed posts"
-    
+
     def get_queryset(self):
         return Post.objects.all().order_by("-views")[:6]
 
@@ -186,3 +186,15 @@ def toggle_save_post(request, post_id):
         messages.success(request, "Post saved successfully!")
 
     return redirect(request.META.get("HTTP_REFERER", "blog-home"))
+
+
+@login_required
+def toggle_like_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+
+    return redirect("post-detail", pk=post.pk)

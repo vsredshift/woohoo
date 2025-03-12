@@ -32,7 +32,17 @@
     <h2 class="article-title">{{post.title}}</a></h2>
     <p class="article-subtitle">{{post.subtitle}}</p>
     <p class="article-content">{{post.content|safe}}</p>
-    <p>Views: {{post.views}}</p>
+   
+    <div class="d-flex align-items-center">
+      <span class="me-3">Views: {{ post.views }}</span>
+  
+      <form action="{% url 'toggle-like' post.pk %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm {% if user in post.likes.all %}btn-success{% else %}btn-outline-success{% endif %}">
+            👍 Like{% if post.total_likes > 1 %}s{% endif %} ({{ post.total_likes }})
+          </button>
+        </form>
+      </div>
   </div>
 </article>
 {% endblock content %}
