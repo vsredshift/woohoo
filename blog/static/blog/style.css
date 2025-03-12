@@ -191,3 +191,17 @@ a.article-title:hover {
 .sidebar-link:hover {
   color: var(--primary-color);
 }
+
+.comment {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.comment .reply {
+  margin-left: 20px;  /* Indent nested replies */
+}
+
+.btn-comment-reply {
+  border-color: var(--bg-steel);
+  color: var(--bg-steel);
+}

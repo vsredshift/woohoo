@@ -54,7 +54,7 @@ class Post(Model):
 
     def get_absolute_url(self):
         return reverse("post-detail", kwargs={"pk": self.pk})
-    
+
     def save(self, *args, **kwargs):
         if self.pk:
             self.date_updated = timezone.now()
@@ -74,3 +74,19 @@ class SavedPost(Model):
 
     def __str__(self):
         return f"{self.user.username} saved {self.post.title}"
+
+
+class Comment(Model):
+    post = ForeignKey(Post, related_name="comments", on_delete=CASCADE)
+    user = ForeignKey(User, on_delete=CASCADE)
+    content = TextField()
+    created_at = DateTimeField(default=timezone.now)
+    parent_comment = ForeignKey(
+        "self", null=True, blank=True, related_name="replies", on_delete=CASCADE
+    )
+
+    def __str__(self):
+        return f"Comment by {self.user.username} on {self.post.title}"
+
+    class Meta:
+        ordering = ["-created_at"]
