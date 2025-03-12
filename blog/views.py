@@ -87,6 +87,14 @@ class LatestPostsView(PostListView):
     def get_queryset(self):
         time_limit = timezone.now() - timedelta(days=self.number_of_days)
         return Post.objects.filter(date_posted__gte=time_limit).order_by("-date_posted")
+    
+
+class MostViewedPostsView(PostListView):
+    def get_custom_message(self):
+        return f"Most viewed posts"
+    
+    def get_queryset(self):
+        return Post.objects.all().order_by("-views")[:6]
 
 
 class SavedPostsListView(LoginRequiredMixin, PostListView):
@@ -100,6 +108,12 @@ class SavedPostsListView(LoginRequiredMixin, PostListView):
 class PostDetailView(DetailView):
     model = Post
     context_object_name = "post"
+
+    def get_object(self, queryset=None):
+        post = super().get_object(queryset)
+        post.views += 1  # Increment view count
+        post.save(update_fields=["views"])  # Save only the views field
+        return post
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):

@@ -43,8 +43,11 @@ class Post(Model):
     date_updated = DateTimeField(null=True, default=None)
     author = ForeignKey(User, on_delete=CASCADE)
     category = ForeignKey(Category, on_delete=CASCADE, default=1)
+
     is_featured = BooleanField(default=False)
+    views = PositiveIntegerField(default=0)
     saved_by = ManyToManyField(User, related_name="saved_posts", blank=True)
+    likes = ManyToManyField(User, related_name="liked_posts", blank=True)
 
     def __str__(self):
         return self.title
@@ -56,6 +59,9 @@ class Post(Model):
         if self.pk:
             self.date_updated = timezone.now()
         super().save(*args, **kwargs)
+
+    def total_likes(self):
+        return self.likes.count()
 
 
 class SavedPost(Model):
