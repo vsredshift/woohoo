@@ -13,7 +13,7 @@ jsbeautifier==1.15.4
 json5==0.10.0
 lorem==0.1.1
 pathspec==0.12.1
-pillow==11.1.0
+pillow==12.1.1
 PyYAML==6.0.2
 regex==2024.11.6
 six==1.17.0
