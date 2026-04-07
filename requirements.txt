@@ -17,6 +17,6 @@ pillow==12.1.1
 PyYAML==6.0.2
 regex==2024.11.6
 six==1.17.0
-sqlparse==0.5.3
+sqlparse==0.5.4
 tqdm==4.67.1
 tzdata==2025.1
